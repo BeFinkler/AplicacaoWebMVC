@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+
+<main style="padding:40px;">
+    <h1>Gerenciar Produtos</h1>
+
+    <h2>Adicionar Produto</h2>
+    <form action="/produtos" method="POST">
+        <input type="text" name="name" placeholder="Nome" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <button type="submit">Adicionar</button>
+    </form>
+
+    <h2>Lista de Produtos</h2>
+
+    <ul>
+        <% if (users.length === 0) { %>
+            <p>Nenhum produto cadastrado.</p>
+        <% } %>
+
+        <% users.forEach(user => { %>
+            <li>
+                <strong><%= user.name %></strong> - <%= user.email %>
+                <a href="/delete/<%= user.id %>">Excluir</a>
+            </li>
+        <% }) %>
+    </ul>
+</main>
+
+<%- include('partials/footer') %>
