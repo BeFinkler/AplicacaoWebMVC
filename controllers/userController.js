@@ -1,4 +1,4 @@
-const { User, users } = require('../models/userModel');
+const { Product, products } = require('../models/userModel');
 
 let idCounter = 1;
 
@@ -14,26 +14,29 @@ exports.contato = (req, res) => {
     res.render('contato', { title: 'Contato' });
 };
 
-exports.listUsers = (req, res) => {
-    res.render('crude', { title: 'Produtos', users });
+exports.listProducts = (req, res) => {
+    res.render('crud', { title: 'Produtos', products });
 };
 
+exports.createProduct = (req, res) => {
+    const { name, description, price } = req.body;
 
-exports.createUser = (req, res) => {
-    const { name, email } = req.body;
+    if (!name || !description || !price) {
+        return res.redirect('/produtos');
+    }
 
-    const newUser = new User(idCounter++, name, email);
-    users.push(newUser);
+    const newProduct = new Product(idCounter++, name, description, parseFloat(price));
+    products.push(newProduct);
 
     res.redirect('/produtos');
 };
 
-exports.deleteUser = (req, res) => {
+exports.deleteProduct = (req, res) => {
     const id = parseInt(req.params.id);
 
-    const index = users.findIndex(user => user.id === id);
+    const index = products.findIndex(product => product.id === id);
     if (index !== -1) {
-        users.splice(index, 1);
+        products.splice(index, 1);
     }
 
     res.redirect('/produtos');

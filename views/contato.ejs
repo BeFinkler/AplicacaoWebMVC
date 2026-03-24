@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+
+<main class="container">
+    <div class="content-section">
+        <h1>Contato</h1>
+        
+        <p>Entre em contato conosco:</p>
+
+        <form class="contact-form" action="#" method="POST">
+            <div class="form-group">
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" placeholder="Seu nome" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="email@exemplo.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Mensagem:</label>
+                <textarea id="message" name="message" placeholder="Sua mensagem..." rows="5" required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">Enviar</button>
+        </form>
+
+        <div class="contact-info">
+            <h2>Outras Informações</h2>
+            <ul>
+                <li>Email: exemplo@email.com</li>
+                <li>GitHub: <a href="https://github.com/BeFinkler/AplicacaoWebMVC" target="_blank">github.com/BeFinkler</a></li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<%- include('partials/footer') %>

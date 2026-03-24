@@ -7,9 +7,9 @@ router.get('/', userController.home);
 router.get('/sobre', userController.sobre);
 router.get('/contato', userController.contato);
 
-// CRUD
-router.get('/produtos', userController.listUsers);
-router.post('/produtos', userController.createUser);
-router.get('/delete/:id', userController.deleteUser);
+// CRUD de Produtos
+router.get('/produtos', userController.listProducts);
+router.post('/produtos', userController.createProduct);
+router.get('/delete/:id', userController.deleteProduct);
 
 module.exports = router;

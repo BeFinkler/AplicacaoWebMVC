@@ -1,12 +1,13 @@
-class User {
-    constructor(id, name, email) {
+class Product {
+    constructor(id, name, description, price) {
         this.id = id;
         this.name = name;
-        this.email = email;
+        this.description = description;
+        this.price = price;
     }
 }
 
 // "banco de dados" em memória
-const users = [];
+const products = [];
 
-module.exports = { User, users };
+module.exports = { Product, products };

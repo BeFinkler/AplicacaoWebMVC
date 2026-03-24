@@ -1,13 +1,37 @@
 <%- include('partials/header') %>
 
-<main style="text-align:center; padding:40px;">
-    <h1>Aplicação MVC</h1>
-    <p>Projeto em Node.js usando padrão MVC</p>
+<main class="container">
+    <div class="hero">
+        <h1>Bem-vindo</h1>
+        <p class="subtitle">Este é um projeto de gerenciamento de produtos usando Node.js e o padrão MVC</p>
+    </div>
 
-    <div style="margin-top:20px;">
-        <a href="/produtos">Produtos</a> |
-        <a href="/sobre">Sobre</a> |
-        <a href="/contato">Contato</a>
+    <div class="about-project">
+        <h2>O que é este projeto?</h2>
+        <p>Um trabalho escolar que implementa o padrão MVC (Model-View-Controller) para gerenciar uma lista de produtos.</p>
+    </div>
+
+    <div class="features">
+        <h2>Funcionalidades</h2>
+        <ul>
+            <li>Adicionar produtos</li>
+            <li>Visualizar produtos</li>
+            <li>Deletar produtos</li>
+        </ul>
+    </div>
+
+    <div class="stack">
+        <h2>Tecnologias</h2>
+        <ul>
+            <li>Node.js</li>
+            <li>Express</li>
+            <li>EJS</li>
+            <li>CSS</li>
+        </ul>
+    </div>
+
+    <div class="cta">
+        <a href="/produtos" class="btn-primary">Ir para Produtos</a>
     </div>
 </main>
 
