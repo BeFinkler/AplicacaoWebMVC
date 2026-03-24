@@ -4,18 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title || "App MVC" %></title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-<header>
-    <h1>Gerenciador de Produtos</h1>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/produtos">Produtos</a>
-        <a href="/sobre">Sobre</a>
-        <a href="/contato">Contato</a>
-    </nav>
-</header>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Gerenciador de Produtos</span>
+        <div>
+            <a class="btn btn-outline-light btn-sm me-2" href="/">Home</a>
+            <a class="btn btn-outline-light btn-sm me-2" href="/produtos">Produtos</a>
+            <a class="btn btn-outline-light btn-sm me-2" href="/sobre">Sobre</a>
+            <a class="btn btn-outline-light btn-sm" href="/contato">Contato</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
 
 

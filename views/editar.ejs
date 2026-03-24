@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Editar Produto</h1>
+
+                <form action="/editar/<%= product.id %>" method="POST" class="mt-4">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nome:</label>
+                        <input type="text" class="form-control" id="name" name="name" value="<%= product.name %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descrição:</label>
+                        <input type="text" class="form-control" id="description" name="description" value="<%= product.description %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Preço:</label>
+                        <input type="number" class="form-control" id="price" name="price" value="<%= product.price %>" step="0.01" required>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        <a href="/produtos" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

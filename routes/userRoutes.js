@@ -11,5 +11,7 @@ router.get('/contato', userController.contato);
 router.get('/produtos', userController.listProducts);
 router.post('/produtos', userController.createProduct);
 router.get('/delete/:id', userController.deleteProduct);
+router.get('/editar/:id', userController.showEditForm);
+router.post('/editar/:id', userController.updateProduct);
 
 module.exports = router;

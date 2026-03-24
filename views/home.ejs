@@ -1,38 +1,59 @@
 <%- include('partials/header') %>
 
-<main class="container">
-    <div class="hero">
-        <h1>Bem-vindo</h1>
-        <p class="subtitle">Este é um projeto de gerenciamento de produtos usando Node.js e o padrão MVC</p>
+<div class="jumbotron bg-light p-5 rounded mb-4">
+    <h1 class="display-4">Bem-vindo</h1>
+    <p class="lead">Este é um projeto de gerenciamento de produtos usando Node.js e o padrão MVC</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">O que é este projeto?</h5>
+                <p class="card-text">Um trabalho escolar que implementa o padrão MVC (Model-View-Controller) para gerenciar uma lista de produtos.</p>
+            </div>
+        </div>
     </div>
 
-    <div class="about-project">
-        <h2>O que é este projeto?</h2>
-        <p>Um trabalho escolar que implementa o padrão MVC (Model-View-Controller) para gerenciar uma lista de produtos.</p>
+    <div class="col-md-6 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Funcionalidades</h5>
+                <ul class="card-text">
+                    <li>Adicionar produtos</li>
+                    <li>Editar produtos</li>
+                    <li>Visualizar produtos</li>
+                    <li>Deletar produtos</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Tecnologias</h5>
+                <ul class="card-text">
+                    <li>Node.js</li>
+                    <li>Express</li>
+                    <li>EJS</li>
+                    <li>Bootstrap</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-    <div class="features">
-        <h2>Funcionalidades</h2>
-        <ul>
-            <li>Adicionar produtos</li>
-            <li>Visualizar produtos</li>
-            <li>Deletar produtos</li>
-        </ul>
+    <div class="col-md-6 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Comece agora!</h5>
+                <p class="card-text">Clique no botão abaixo para acessar a página de produtos.</p>
+                <a href="/produtos" class="btn btn-primary">Ir para Produtos</a>
+            </div>
+        </div>
     </div>
-
-    <div class="stack">
-        <h2>Tecnologias</h2>
-        <ul>
-            <li>Node.js</li>
-            <li>Express</li>
-            <li>EJS</li>
-            <li>CSS</li>
-        </ul>
-    </div>
-
-    <div class="cta">
-        <a href="/produtos" class="btn-primary">Ir para Produtos</a>
-    </div>
-</main>
+</div>
 
 <%- include('partials/footer') %>

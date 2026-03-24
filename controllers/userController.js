@@ -41,3 +41,32 @@ exports.deleteProduct = (req, res) => {
 
     res.redirect('/produtos');
 };
+
+exports.showEditForm = (req, res) => {
+    const id = parseInt(req.params.id);
+    const product = products.find(p => p.id === id);
+
+    if (!product) {
+        return res.redirect('/produtos');
+    }
+
+    res.render('editar', { title: 'Editar Produto', product });
+};
+
+exports.updateProduct = (req, res) => {
+    const id = parseInt(req.params.id);
+    const { name, description, price } = req.body;
+
+    if (!name || !description || !price) {
+        return res.redirect('/produtos');
+    }
+
+    const product = products.find(p => p.id === id);
+    if (product) {
+        product.name = name;
+        product.description = description;
+        product.price = parseFloat(price);
+    }
+
+    res.redirect('/produtos');
+};
