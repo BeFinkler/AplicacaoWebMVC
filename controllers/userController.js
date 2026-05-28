@@ -3,19 +3,19 @@ const { Product, products } = require('../models/userModel');
 let idCounter = 1;
 
 exports.home = (req, res) => {
-    res.render('home', { title: 'Home' });
+    res.render('home', { title: 'Home', session: req.session });
 };
 
 exports.sobre = (req, res) => {
-    res.render('sobre', { title: 'Sobre' });
+    res.render('sobre', { title: 'Sobre', session: req.session });
 };
 
 exports.contato = (req, res) => {
-    res.render('contato', { title: 'Contato' });
+    res.render('contato', { title: 'Contato', session: req.session });
 };
 
 exports.listProducts = (req, res) => {
-    res.render('crud', { title: 'Produtos', products });
+    res.render('crud', { title: 'Produtos', products, session: req.session });
 };
 
 exports.createProduct = (req, res) => {
@@ -50,7 +50,7 @@ exports.showEditForm = (req, res) => {
         return res.redirect('/produtos');
     }
 
-    res.render('editar', { title: 'Editar Produto', product });
+    res.render('editar', { title: 'Editar Produto', product, session: req.session });
 };
 
 exports.updateProduct = (req, res) => {

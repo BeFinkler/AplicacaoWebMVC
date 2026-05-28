@@ -1,6 +1,10 @@
 const express = require('express');
 const userController = require('../controllers/userController');
+const authMiddleware = require('../middlewares/auth');
 const router = express.Router();
+
+// Todas as rotas de usuário são protegidas por autenticação
+router.use(authMiddleware);
 
 // páginas
 router.get('/', userController.home);
