@@ -3,13 +3,16 @@ const User = require('../models/authModel');
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
-function cookieOptions() {
+function cookieBaseOptions() {
     return {
         httpOnly: true,
         sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: ONE_DAY_MS
+        secure: process.env.NODE_ENV === 'production'
     };
+}
+
+function cookieOptions() {
+    return { ...cookieBaseOptions(), maxAge: ONE_DAY_MS };
 }
 
 exports.showLogin = (req, res) => {
@@ -53,7 +56,12 @@ exports.processLogin = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
-    res.clearCookie('token', cookieOptions());
-    res.set('Cache-Control', 'no-store');
+    res.clearCookie('token', cookieBaseOptions());
+    res.set({
+        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+        Pragma: 'no-cache',
+        Expires: '0',
+        'Clear-Site-Data': '"cache"'
+    });
     res.redirect('/login');
 };

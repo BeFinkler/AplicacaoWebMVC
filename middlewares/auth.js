@@ -34,7 +34,7 @@ module.exports = (req, res, next) => {
         req.user = decoded;
 
         // Impede cache de páginas autenticadas
-        res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
         res.set('Pragma', 'no-cache');
         res.set('Expires', '0');
 

@@ -1,23 +1,38 @@
 <%- include('partials/header') %>
 
-<div class="card">
-    <div class="card-body">
-        <h1 class="card-title">Sobre o Projeto</h1>
-        
-        <h2 class="mt-4">Objetivo</h2>
-        <p>Demonstrar como criar uma aplicação web usando Node.js e o padrão MVC.</p>
+<section class="row g-4">
+    <div class="col-lg-8">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body p-4">
+                <span class="badge text-bg-primary mb-3">Projeto MVC</span>
+                <h1 class="card-title">Sobre o projeto</h1>
+                <p class="lead">Um gerenciador de produtos criado para demonstrar, de forma prática, como uma aplicação web pode ser organizada em camadas.</p>
+                <p>O sistema separa interface, regras de negócio e persistência de dados. Isso torna o código mais fácil de entender, testar e evoluir quando novas funcionalidades forem necessárias.</p>
 
-        <h2 class="mt-4">Estrutura</h2>
-        <ul>
-            <li><strong>Models</strong> - Dados dos produtos</li>
-            <li><strong>Views</strong> - Páginas EJS</li>
-            <li><strong>Controllers</strong> - Lógica da aplicação</li>
-            <li><strong>Routes</strong> - URLs e rotas</li>
-        </ul>
-
-        <h2 class="mt-4">Como funciona</h2>
-        <p>O projeto separa a aplicação em três camadas principais para melhor organização do código.</p>
+                <h2 class="h4 mt-4">Como a aplicação está organizada</h2>
+                <div class="row g-3 mt-1">
+                    <div class="col-md-6"><div class="border rounded p-3 h-100"><h3 class="h6">Models</h3><p class="mb-0 small">Definem os dados de usuários e produtos no MongoDB.</p></div></div>
+                    <div class="col-md-6"><div class="border rounded p-3 h-100"><h3 class="h6">Controllers</h3><p class="mb-0 small">Concentram validações e as ações do CRUD.</p></div></div>
+                    <div class="col-md-6"><div class="border rounded p-3 h-100"><h3 class="h6">Views</h3><p class="mb-0 small">Apresentam as páginas ao usuário usando EJS e Bootstrap.</p></div></div>
+                    <div class="col-md-6"><div class="border rounded p-3 h-100"><h3 class="h6">Rotas e middlewares</h3><p class="mb-0 small">Organizam URLs e protegem páginas que exigem login.</p></div></div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+    <div class="col-lg-4">
+        <div class="card border-primary h-100 shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="h4">Tecnologias</h2>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item px-0">Node.js e Express</li>
+                    <li class="list-group-item px-0">MongoDB e Mongoose</li>
+                    <li class="list-group-item px-0">EJS e Bootstrap</li>
+                    <li class="list-group-item px-0">JWT em cookie HTTP-only</li>
+                </ul>
+                <a href="/produtos" class="btn btn-primary w-100 mt-4">Gerenciar produtos</a>
+            </div>
+        </div>
+    </div>
+</section>
 
 <%- include('partials/footer') %>
