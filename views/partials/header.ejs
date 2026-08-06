@@ -16,9 +16,9 @@
             <a class="btn btn-outline-light btn-sm me-2" href="/produtos">Produtos</a>
             <a class="btn btn-outline-light btn-sm me-2" href="/sobre">Sobre</a>
             <a class="btn btn-outline-light btn-sm me-2" href="/contato">Contato</a>
-            <% if (typeof session !== 'undefined' && session && session.user) { %>
+            <% if (typeof user !== 'undefined' && user) { %>
                 <span class="navbar-text text-light me-2">
-                    <small>Bem-vindo, <strong><%= session.user.name %></strong></small>
+                    <small>Bem-vindo, <strong><%= user.name %></strong></small>
                 </span>
                 <a class="btn btn-outline-danger btn-sm" href="/logout">Sair</a>
             <% } %>
