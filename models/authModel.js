@@ -23,6 +23,12 @@ async function verifyPassword(password, hash) {
     return expectedKey.length === derivedKey.length && crypto.timingSafeEqual(derivedKey, expectedKey);
 }
 
+function verifyLegacyPassword(password, storedPassword) {
+    const input = Buffer.from(password);
+    const stored = Buffer.from(storedPassword);
+    return input.length === stored.length && crypto.timingSafeEqual(input, stored);
+}
+
 const userSchema = new mongoose.Schema(
     {
         name: { type: String, required: true, trim: true, maxlength: 100 },
@@ -39,7 +45,15 @@ userSchema.pre('save', async function hashNewPassword() {
 });
 
 userSchema.methods.comparePassword = function comparePassword(password) {
-    return verifyPassword(password, this.password);
+    if (this.password.startsWith('scrypt:')) {
+        return verifyPassword(password, this.password);
+    }
+
+    return verifyLegacyPassword(password, this.password);
+};
+
+userSchema.methods.hasLegacyPassword = function hasLegacyPassword() {
+    return !this.password.startsWith('scrypt:');
 };
 
 userSchema.statics.hashPassword = hashPassword;

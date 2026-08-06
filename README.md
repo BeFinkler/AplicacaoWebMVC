@@ -68,6 +68,15 @@ npm start
 
 A aplicação estará disponível em `http://localhost:3000`.
 
+### 🔑 Credenciais de exemplo
+
+```text
+E-mail: user@example.com
+Senha: 123456
+```
+
+Ao usar essas credenciais pela primeira vez, a aplicação converte a senha antiga para armazenamento seguro.
+
 ---
 
 ## 📁 Estrutura do Projeto

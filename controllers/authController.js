@@ -33,6 +33,11 @@ exports.processLogin = async (req, res) => {
             return res.status(401).render('login', { error: 'E-mail ou senha inválidos.' });
         }
 
+        if (user.hasLegacyPassword()) {
+            user.password = password;
+            await user.save();
+        }
+
         const token = jwt.sign(
             { id: user.id, email: user.email, name: user.name },
             process.env.JWT_SECRET,
