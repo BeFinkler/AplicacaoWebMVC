@@ -2,6 +2,10 @@
 
 <h1 class="mb-4">Gerenciar Produtos</h1>
 
+<% if (error) { %>
+    <div class="alert alert-danger" role="alert"><%= error %></div>
+<% } %>
+
 <div class="row">
     <div class="col-md-4 mb-4">
         <div class="card">
@@ -18,7 +22,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="price" class="form-label">Preço:</label>
-                        <input type="number" class="form-control" id="price" name="price" placeholder="Preço" step="0.01" required>
+                        <input type="number" class="form-control" id="price" name="price" placeholder="Preço" min="0" step="0.01" required>
                     </div>
                     <button type="submit" class="btn btn-success w-100">Adicionar</button>
                 </form>
@@ -43,8 +47,10 @@
                                 <p class="card-text"><strong>Descrição:</strong> <%= product.description %></p>
                                 <p class="card-text"><strong>Preço:</strong> R$ <%= product.price.toFixed(2) %></p>
                                 <div class="btn-group" role="group">
-                                    <a href="/editar/<%= product.id %>" class="btn btn-sm btn-warning">Editar</a>
-                                    <a href="/delete/<%= product.id %>" class="btn btn-sm btn-danger" onclick="return confirm('Deletar?')">Deletar</a>
+                                    <a href="/editar/<%= product._id %>" class="btn btn-sm btn-warning">Editar</a>
+                                    <form action="/produtos/<%= product._id %>/delete" method="POST" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Deletar este produto?')">Deletar</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

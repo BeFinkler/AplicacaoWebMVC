@@ -6,7 +6,7 @@
             <div class="card-body">
                 <h1 class="card-title">Editar Produto</h1>
 
-                <form action="/editar/<%= product.id %>" method="POST" class="mt-4">
+                <form action="/editar/<%= product._id %>" method="POST" class="mt-4">
                     <div class="mb-3">
                         <label for="name" class="form-label">Nome:</label>
                         <input type="text" class="form-control" id="name" name="name" value="<%= product.name %>" required>
