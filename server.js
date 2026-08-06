@@ -39,6 +39,7 @@ function createApp() {
     app.use(express.json());
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, 'public')));
+    app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
     app.use('/', authRoutes);
     app.use('/', userRoutes);
 
@@ -58,7 +59,7 @@ async function startServer() {
 
     const app = createApp();
     const port = Number(process.env.PORT) || 3000;
-    app.listen(port, () => console.log(`Servidor rodando em http://localhost:${port}`));
+    app.listen(port, '0.0.0.0', () => console.log(`Servidor rodando na porta ${port}`));
 }
 
 if (require.main === module) {
