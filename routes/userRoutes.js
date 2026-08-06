@@ -14,7 +14,7 @@ router.get('/contato', userController.contato);
 // CRUD de Produtos
 router.get('/produtos', userController.listProducts);
 router.post('/produtos', userController.createProduct);
-router.get('/delete/:id', userController.deleteProduct);
+router.post('/produtos/:id/delete', userController.deleteProduct);
 router.get('/editar/:id', userController.showEditForm);
 router.post('/editar/:id', userController.updateProduct);
 
