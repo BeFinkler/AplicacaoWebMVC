@@ -2,7 +2,7 @@
 
 Aplicação web monolítica construída com Node.js, Express e EJS seguindo a arquitetura MVC. Organizadores administram seus próprios eventos e participantes consultam a agenda e realizam inscrições.
 
-> URL de produção: será adicionada após a configuração do serviço no Render.
+> URL de produção: https://aplicacaowebmvc-1.onrender.com
 
 ## Funcionalidades
 
@@ -227,7 +227,7 @@ A feature passa por Pull Request para `develop`. Após os testes e a homologaç�
 ==================================================
 1. APLICAÇÃO 1: GESTÃO DE EVENTOS (ARQUITETURA MVC)
 ==================================================
-* Link da Aplicação em Produção (Render): [preencher após o deploy]
+* Link da Aplicação em Produção (Render): https://aplicacaowebmvc-1.onrender.com
 * Link do Repositório GitHub (MVC): https://github.com/BeFinkler/AplicacaoWebMVC
 ```
 

@@ -7,7 +7,7 @@
 ## 1. APLICAÇÃO 1: GESTÃO DE EVENTOS (ARQUITETURA MVC)  
 ==================================================
 
-- **Link da Aplicação em Produção (Render):** [PREENCHER APÓS O DEPLOY]
+- **Link da Aplicação em Produção (Render):** https://aplicacaowebmvc-1.onrender.com
 - **Link do Repositório GitHub (MVC):** https://github.com/BeFinkler/AplicacaoWebMVC
 
 ## Checklist de homologação
