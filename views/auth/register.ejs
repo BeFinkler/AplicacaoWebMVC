@@ -1,0 +1,20 @@
+<%- include('../partials/header') %>
+
+<section class="auth-shell">
+    <div class="auth-intro"><span class="eyebrow">Nova conta</span><h1>Um cadastro, muitos encontros.</h1><p>O cadastro público cria um perfil de participante. Contas de organizador são criadas com o comando administrativo documentado no projeto.</p></div>
+    <div class="auth-card">
+        <h2>Criar conta</h2>
+        <% if (errors.length) { %><div class="alert alert-danger" role="alert"><ul class="mb-0"><% errors.forEach(error => { %><li><%= error %></li><% }) %></ul></div><% } %>
+        <form action="/cadastro" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="mb-3"><label class="form-label" for="name">Nome completo</label><input class="form-control" id="name" name="name" value="<%= formData.name || '' %>" maxlength="100" autocomplete="name" required></div>
+            <div class="mb-3"><label class="form-label" for="email">E-mail</label><input class="form-control" id="email" name="email" type="email" value="<%= formData.email || '' %>" autocomplete="email" required></div>
+            <div class="mb-3"><label class="form-label" for="password">Senha</label><input class="form-control" id="password" name="password" type="password" minlength="8" maxlength="72" autocomplete="new-password" required><div class="form-text">Use pelo menos 8 caracteres.</div></div>
+            <div class="mb-3"><label class="form-label" for="passwordConfirmation">Confirmar senha</label><input class="form-control" id="passwordConfirmation" name="passwordConfirmation" type="password" minlength="8" maxlength="72" autocomplete="new-password" required></div>
+            <button class="btn btn-primary w-100" type="submit">Criar conta de participante</button>
+        </form>
+        <p class="auth-switch">Já possui conta? <a href="/login">Entre agora</a>.</p>
+    </div>
+</section>
+
+<%- include('../partials/footer') %>

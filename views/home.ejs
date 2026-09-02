@@ -1,59 +1,39 @@
 <%- include('partials/header') %>
 
-<div class="jumbotron bg-light p-5 rounded mb-4">
-    <h1 class="display-4">Bem-vindo</h1>
-    <p class="lead">Este é um projeto de gerenciamento de produtos usando Node.js e o padrão MVC</p>
-</div>
-
-<div class="row">
-    <div class="col-md-6 mb-3">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">O que é este projeto?</h5>
-                <p class="card-text">Um trabalho escolar que implementa o padrão MVC (Model-View-Controller) para gerenciar uma lista de produtos.</p>
-            </div>
+<section class="hero-card">
+    <div class="hero-copy">
+        <span class="eyebrow">Conexões que viram experiências</span>
+        <h1>Encontre, organize e viva bons eventos.</h1>
+        <p>O EventHub aproxima participantes de encontros acadêmicos e corporativos, com inscrições simples e gestão segura.</p>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-light btn-lg" href="/eventos">Explorar eventos</a>
+            <% if (!user) { %><a class="btn btn-outline-light btn-lg" href="/cadastro">Criar minha conta</a><% } %>
         </div>
     </div>
+    <div class="hero-mark" aria-hidden="true">EH</div>
+</section>
 
-    <div class="col-md-6 mb-3">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Funcionalidades</h5>
-                <ul class="card-text">
-                    <li>Adicionar produtos</li>
-                    <li>Editar produtos</li>
-                    <li>Visualizar produtos</li>
-                    <li>Deletar produtos</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+<section class="section-heading">
+    <div><span class="eyebrow text-primary">Agenda</span><h2>Próximos eventos</h2></div>
+    <a href="/eventos">Ver todos</a>
+</section>
 
-<div class="row">
-    <div class="col-md-6 mb-3">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Tecnologias</h5>
-                <ul class="card-text">
-                    <li>Node.js</li>
-                    <li>Express</li>
-                    <li>EJS</li>
-                    <li>Bootstrap</li>
-                </ul>
+<% if (!events.length) { %>
+    <div class="empty-state"><h3>A agenda está sendo preparada</h3><p>Novos eventos aparecerão aqui assim que forem publicados.</p></div>
+<% } else { %>
+    <div class="row g-4">
+        <% events.forEach(event => { %>
+            <div class="col-md-6 col-xl-4">
+                <article class="event-card h-100">
+                    <div class="event-date"><strong><%= formatDateTime(event.inicio) %></strong></div>
+                    <h3><%= event.titulo %></h3>
+                    <p class="event-location"><%= event.local %></p>
+                    <p class="event-description"><%= event.descricao %></p>
+                    <div class="event-card-footer"><span><%= Number(event.inscritos) %>/<%= event.capacidade %> inscritos</span><a href="/eventos/<%= event.id %>">Detalhes</a></div>
+                </article>
             </div>
-        </div>
+        <% }) %>
     </div>
-
-    <div class="col-md-6 mb-3">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Comece agora!</h5>
-                <p class="card-text">Clique no botão abaixo para acessar a página de produtos.</p>
-                <a href="/produtos" class="btn btn-primary">Ir para Produtos</a>
-            </div>
-        </div>
-    </div>
-</div>
+<% } %>
 
 <%- include('partials/footer') %>

@@ -1,29 +1,36 @@
 {
-  "name": "aplicacaowebmvc",
-  "version": "1.0.0",
-  "description": "",
+  "name": "eventhub-mvc",
+  "version": "2.0.0",
+  "description": "Sistema de gestão de eventos e inscrições com Node.js, Express, EJS e MySQL.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "db:migrate": "node scripts/migrate.js",
+    "seed:organizer": "node scripts/seedOrganizer.js",
+    "test": "node --test --test-concurrency=1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BeFinkler/AplicacaoWebMVC.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["mvc", "eventos", "express", "ejs", "mysql"],
+  "author": "Bernardo Finkler",
   "license": "ISC",
   "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/BeFinkler/AplicacaoWebMVC/issues"
-  },
+  "engines": { "node": ">=20.19.0" },
+  "bugs": { "url": "https://github.com/BeFinkler/AplicacaoWebMVC/issues" },
   "homepage": "https://github.com/BeFinkler/AplicacaoWebMVC#readme",
   "dependencies": {
-    "cookie-parser": "^1.4.7",
+    "bcryptjs": "^3.0.2",
     "dotenv": "^17.4.2",
-    "ejs": "^5.0.1",
+    "ejs": "^3.1.10",
     "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.9.1"
-  }
+    "express-rate-limit": "^8.1.0",
+    "express-session": "^1.18.2",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "mysql2": "^3.14.4"
+  },
+  "devDependencies": { "supertest": "^7.1.4" }
 }

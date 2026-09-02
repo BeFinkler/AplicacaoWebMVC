@@ -1,0 +1,10 @@
+<%- include('../partials/header') %>
+
+<section class="page-heading"><div><span class="eyebrow text-primary">Área do organizador</span><h1>Meus eventos</h1><p>Crie eventos e acompanhe as inscrições.</p></div><a class="btn btn-primary" href="/organizador/eventos/novo">Criar evento</a></section>
+
+<% if (!events.length) { %><div class="empty-state"><h2>Seu primeiro evento começa aqui</h2><p>Cadastre data, local e capacidade para começar a receber participantes.</p><a class="btn btn-primary" href="/organizador/eventos/novo">Criar evento</a></div>
+<% } else { %><div class="table-responsive content-card p-0"><table class="table event-table align-middle mb-0"><thead><tr><th>Evento</th><th>Data</th><th>Inscrições</th><th class="text-end">Ações</th></tr></thead><tbody>
+    <% events.forEach(event => { %><tr><td><strong><%= event.titulo %></strong><small><%= event.local %></small></td><td><%= formatDateTime(event.inicio) %></td><td><%= Number(event.inscritos) %> / <%= event.capacidade %></td><td class="text-end"><div class="action-group"><a class="btn btn-sm btn-outline-primary" href="/organizador/eventos/<%= event.id %>/inscritos">Inscritos</a><a class="btn btn-sm btn-outline-secondary" href="/organizador/eventos/<%= event.id %>/editar">Editar</a><form action="/organizador/eventos/<%= event.id %>/excluir" method="POST"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn btn-sm btn-outline-danger" type="submit" data-confirm="Excluir este evento e todas as inscrições?">Excluir</button></form></div></td></tr><% }) %>
+    </tbody></table></div><% } %>
+
+<%- include('../partials/footer') %>

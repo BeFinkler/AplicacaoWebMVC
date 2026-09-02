@@ -1,0 +1,8 @@
+<%- include('../partials/header') %>
+
+<a class="back-link" href="/organizador">← Voltar ao painel</a>
+<section class="page-heading"><div><span class="eyebrow text-primary">Lista de presença</span><h1><%= event.titulo %></h1><p><%= participants.length %> de <%= event.capacidade %> vagas preenchidas.</p></div></section>
+<% if (!participants.length) { %><div class="empty-state"><h2>Ainda não há inscrições</h2><p>Os participantes aparecerão aqui após a confirmação.</p></div>
+<% } else { %><div class="table-responsive content-card p-0"><table class="table event-table align-middle mb-0"><thead><tr><th>Participante</th><th>E-mail</th><th>Inscrito em</th></tr></thead><tbody><% participants.forEach(participant => { %><tr><td><strong><%= participant.nome %></strong></td><td><%= participant.email %></td><td><%= formatDateTime(participant.inscrito_em) %></td></tr><% }) %></tbody></table></div><% } %>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+
+<a class="back-link" href="/eventos">← Voltar aos eventos</a>
+<section class="event-detail">
+    <div class="event-main">
+        <span class="eyebrow text-primary">Evento</span><h1><%= event.titulo %></h1><p class="lead"><%= event.descricao %></p>
+        <div class="detail-grid"><div><span>Data e horário</span><strong><%= formatDateTime(event.inicio) %> até <%= formatDateTime(event.fim) %></strong></div><div><span>Local</span><strong><%= event.local %></strong></div><div><span>Organização</span><strong><%= event.organizador_nome %></strong></div><div><span>Participação</span><strong><%= Number(event.inscritos) %> inscritos · <%= availableSpots %> vagas</strong></div></div>
+    </div>
+    <aside class="action-card"><h2>Participar</h2>
+        <% if (!user) { %><p>Entre ou crie uma conta para realizar sua inscrição.</p><a class="btn btn-primary w-100" href="/login">Entrar para me inscrever</a>
+        <% } else if (user.role === 'organizador') { %><p>Contas de organizador administram eventos e não realizam inscrições.</p><a class="btn btn-outline-primary w-100" href="/organizador">Abrir painel</a>
+        <% } else if (registered) { %><div class="status-pill success">Inscrição confirmada</div><form action="/eventos/<%= event.id %>/cancelar" method="POST"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn btn-outline-danger w-100" type="submit" data-confirm="Cancelar sua inscrição neste evento?">Cancelar inscrição</button></form>
+        <% } else if (availableSpots === 0) { %><div class="status-pill danger">Evento lotado</div><p>Não há vagas disponíveis neste momento.</p>
+        <% } else { %><p>Há <strong><%= availableSpots %></strong> vaga(s) disponível(is).</p><form action="/eventos/<%= event.id %>/inscrever" method="POST"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn btn-primary w-100" type="submit">Confirmar inscrição</button></form><% } %>
+    </aside>
+</section>
+
+<%- include('../partials/footer') %>

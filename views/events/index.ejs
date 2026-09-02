@@ -1,0 +1,20 @@
+<%- include('../partials/header') %>
+
+<section class="page-heading"><div><span class="eyebrow text-primary">Catálogo</span><h1>Eventos disponíveis</h1><p>Escolha uma experiência e confira todos os detalhes.</p></div></section>
+
+<% if (!events.length) { %>
+    <div class="empty-state"><h2>Nenhum evento disponível</h2><p>Volte em breve para conferir as próximas oportunidades.</p></div>
+<% } else { %>
+    <div class="row g-4">
+        <% events.forEach(event => { const available = Math.max(0, Number(event.capacidade) - Number(event.inscritos)); %>
+            <div class="col-md-6 col-xl-4"><article class="event-card h-100">
+                <div class="event-date"><strong><%= formatDateTime(event.inicio) %></strong></div>
+                <h2><%= event.titulo %></h2><p class="event-location"><%= event.local %></p><p class="event-description"><%= event.descricao %></p>
+                <progress class="capacity-progress" value="<%= Number(event.inscritos) %>" max="<%= Number(event.capacidade) %>"><%= Number(event.inscritos) %> de <%= event.capacidade %></progress>
+                <div class="event-card-footer"><span><%= available ? `${available} vaga(s)` : 'Lotado' %></span><a href="/eventos/<%= event.id %>">Ver evento</a></div>
+            </article></div>
+        <% }) %>
+    </div>
+<% } %>
+
+<%- include('../partials/footer') %>

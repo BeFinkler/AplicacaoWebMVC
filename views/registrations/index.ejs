@@ -1,0 +1,7 @@
+<%- include('../partials/header') %>
+
+<section class="page-heading"><div><span class="eyebrow text-primary">Sua agenda</span><h1>Minhas inscrições</h1><p>Acompanhe todos os eventos em que você confirmou presença.</p></div><a class="btn btn-outline-primary" href="/eventos">Encontrar eventos</a></section>
+<% if (!registrations.length) { %><div class="empty-state"><h2>Sua agenda ainda está vazia</h2><p>Explore os eventos e faça sua primeira inscrição.</p><a class="btn btn-primary" href="/eventos">Explorar eventos</a></div>
+<% } else { %><div class="row g-4"><% registrations.forEach(event => { %><div class="col-md-6"><article class="event-card h-100"><div class="event-date"><strong><%= formatDateTime(event.inicio) %></strong></div><h2><%= event.titulo %></h2><p class="event-location"><%= event.local %></p><p>Organização: <%= event.organizador_nome %></p><div class="event-card-footer"><a href="/eventos/<%= event.id %>">Ver detalhes</a><form action="/eventos/<%= event.id %>/cancelar" method="POST"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="btn btn-sm btn-outline-danger" type="submit" data-confirm="Cancelar sua inscrição neste evento?">Cancelar</button></form></div></article></div><% }) %></div><% } %>
+
+<%- include('../partials/footer') %>
