@@ -1,47 +1,29 @@
-const jwt = require('jsonwebtoken');
-
-/**
- * @middleware authMiddleware
- * @description Middleware de autenticação baseado em JWT (JSON Web Token).
- * Verifica o token JWT armazenado no cookie httpOnly 'token'.
- * Se válido, injeta os dados do usuário em `req.user` e prossegue.
- * Se inválido ou ausente, redireciona para a página de login.
- *
- * O token é gerado no `authController.processLogin` e armazenado em cookie httpOnly,
- * o que impede acesso via JavaScript no navegador (proteção contra XSS).
- *
- * @param {import('express').Request} req - Objeto de Requisição do Express.
- *        Espera req.cookies.token = JWT assinado com process.env.JWT_SECRET.
- * @param {import('express').Response} res - Objeto de Resposta do Express.
- * @param {import('express').NextFunction} next - Função para passar ao próximo middleware.
- * @returns {void} Chama next() se autenticado, ou redireciona para '/login'.
- * @example
- * // Proteger todas as rotas de um router:
- * router.use(authMiddleware);
- */
-module.exports = (req, res, next) => {
-    const token = req.cookies?.token;
-
-    if (!token) {
+function requireAuth(req, res, next) {
+    if (!req.session?.user) {
+        req.session.returnTo = req.originalUrl;
         return res.redirect('/login');
     }
 
-    try {
-        // Verifica e decodifica o token usando a chave secreta do .env
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+    return next();
+}
 
-        // Injeta o payload do usuário na requisição para uso nos controllers
-        req.user = decoded;
+function redirectAuthenticated(req, res, next) {
+    if (!req.session?.user) return next();
+    return res.redirect(req.session.user.role === 'organizador' ? '/organizador' : '/eventos');
+}
 
-        // Impede cache de páginas autenticadas
-        res.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
-        res.set('Pragma', 'no-cache');
-        res.set('Expires', '0');
+function requireRole(role) {
+    return (req, res, next) => {
+        if (req.session?.user?.role !== role) {
+            return res.status(403).render('errors/error', {
+                title: 'Acesso negado',
+                statusCode: 403,
+                message: 'Seu perfil não possui permissão para acessar esta página.'
+            });
+        }
+        return next();
+    };
+}
 
-        next();
-    } catch (err) {
-        // Token expirado ou inválido — limpa o cookie e redireciona
-        res.clearCookie('token');
-        return res.redirect('/login');
-    }
-};
+module.exports = { redirectAuthenticated, requireAuth, requireRole };
