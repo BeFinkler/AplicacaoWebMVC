@@ -1,12 +1,15 @@
 const express = require('express');
-const router = express.Router();
 const authController = require('../controllers/authController');
+const { redirectAuthenticated, requireAuth } = require('../middlewares/auth');
+const { loginLimiter } = require('../middlewares/rateLimit');
+const { loginValidation, registerValidation } = require('../middlewares/validation');
 
-// Rota de login (GET e POST)
-router.get('/login', authController.showLogin);
-router.post('/login', authController.processLogin);
+const router = express.Router();
 
-// Rota de logout
-router.get('/logout', authController.logout);
+router.get('/login', redirectAuthenticated, authController.showLogin);
+router.post('/login', redirectAuthenticated, loginLimiter, loginValidation, authController.processLogin);
+router.get('/cadastro', redirectAuthenticated, authController.showRegister);
+router.post('/cadastro', redirectAuthenticated, registerValidation, authController.register);
+router.post('/logout', requireAuth, authController.logout);
 
 module.exports = router;

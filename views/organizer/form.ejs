@@ -1,0 +1,17 @@
+<%- include('../partials/header') %>
+<% const titleValue = event.title ?? event.titulo ?? ''; const descriptionValue = event.description ?? event.descricao ?? ''; const locationValue = event.location ?? event.local ?? ''; const startValue = event.startAt ?? toInputDateTime(event.inicio); const endValue = event.endAt ?? toInputDateTime(event.fim); const capacityValue = event.capacity ?? event.capacidade ?? ''; %>
+
+<a class="back-link" href="/organizador">← Voltar ao painel</a>
+<section class="content-card form-card"><span class="eyebrow text-primary">Área do organizador</span><h1><%= heading %></h1>
+    <% if (errors.length) { %><div class="alert alert-danger" role="alert"><ul class="mb-0"><% errors.forEach(error => { %><li><%= error %></li><% }) %></ul></div><% } %>
+    <form action="<%= action %>" method="POST"><input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <div class="mb-3"><label class="form-label" for="title">Título</label><input class="form-control" id="title" name="title" value="<%= titleValue %>" minlength="3" maxlength="140" required></div>
+        <div class="mb-3"><label class="form-label" for="description">Descrição</label><textarea class="form-control" id="description" name="description" rows="5" minlength="10" maxlength="5000" required><%= descriptionValue %></textarea></div>
+        <div class="mb-3"><label class="form-label" for="location">Local</label><input class="form-control" id="location" name="location" value="<%= locationValue %>" minlength="3" maxlength="180" required></div>
+        <div class="row g-3"><div class="col-md-6"><label class="form-label" for="startAt">Início</label><input class="form-control" id="startAt" name="startAt" type="datetime-local" value="<%= startValue %>" required></div><div class="col-md-6"><label class="form-label" for="endAt">Término</label><input class="form-control" id="endAt" name="endAt" type="datetime-local" value="<%= endValue %>" required></div></div>
+        <div class="mt-3 mb-4"><label class="form-label" for="capacity">Capacidade</label><input class="form-control" id="capacity" name="capacity" type="number" value="<%= capacityValue %>" min="1" max="100000" required></div>
+        <div class="d-flex gap-2"><button class="btn btn-primary" type="submit">Salvar evento</button><a class="btn btn-outline-secondary" href="/organizador">Cancelar</a></div>
+    </form>
+</section>
+
+<%- include('../partials/footer') %>

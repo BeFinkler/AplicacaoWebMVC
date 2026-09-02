@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+
+<section class="auth-shell">
+    <div class="auth-intro"><span class="eyebrow">Bem-vindo de volta</span><h1>Acesse sua agenda no EventHub.</h1><p>Organizadores gerenciam seus eventos. Participantes acompanham suas inscrições.</p></div>
+    <div class="auth-card">
+        <h2>Entrar</h2>
+        <% if (errors.length) { %><div class="alert alert-danger" role="alert"><ul class="mb-0"><% errors.forEach(error => { %><li><%= error %></li><% }) %></ul></div><% } %>
+        <form action="/login" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="mb-3"><label class="form-label" for="email">E-mail</label><input class="form-control" id="email" name="email" type="email" value="<%= formData.email || '' %>" autocomplete="email" required></div>
+            <div class="mb-3"><label class="form-label" for="password">Senha</label><input class="form-control" id="password" name="password" type="password" autocomplete="current-password" required></div>
+            <button class="btn btn-primary w-100" type="submit">Entrar</button>
+        </form>
+        <p class="auth-switch">Ainda não participa? <a href="/cadastro">Crie sua conta</a>.</p>
+    </div>
+</section>
+
+<%- include('../partials/footer') %>

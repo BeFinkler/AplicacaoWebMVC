@@ -1,67 +1,149 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/authModel');
+const bcrypt = require('bcryptjs');
+const { validationResult } = require('express-validator');
+const User = require('../models/userModel');
+const { destroySession, regenerateSession, saveSession } = require('../utils/asyncSession');
+const { sessionCookieOptions } = require('../middlewares/session');
 
-const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+const BCRYPT_ROUNDS = 12;
 
-function cookieBaseOptions() {
-    return {
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production'
+async function authenticateSession(req, user) {
+    const returnTo = req.session.returnTo;
+    await regenerateSession(req);
+    req.session.user = {
+        id: Number(user.id),
+        name: user.nome,
+        email: user.email,
+        role: user.papel
     };
+    await saveSession(req);
+    return returnTo;
 }
 
-function cookieOptions() {
-    return { ...cookieBaseOptions(), maxAge: ONE_DAY_MS };
-}
-
-exports.showLogin = (req, res) => {
+/**
+ * Renderiza o formulário de login.
+ * @param {import('express').Request} req Requisição HTTP.
+ * @param {import('express').Response} res Resposta HTTP.
+ * @returns {void} Renderiza a View de autenticação.
+ */
+function showLogin(req, res) {
     res.set('Cache-Control', 'no-store');
-    res.render('login');
-};
+    res.render('auth/login', { title: 'Entrar', errors: [], formData: {} });
+}
 
-exports.processLogin = async (req, res) => {
-    const email = req.body.email?.trim().toLowerCase();
-    const { password } = req.body;
-
-    if (!email || !password) {
-        return res.status(400).render('login', { error: 'E-mail e senha são obrigatórios.' });
+/**
+ * Autentica um usuário e inicia uma sessão protegida.
+ * @async
+ * @param {import('express').Request} req Requisição com e-mail e senha validados.
+ * @param {import('express').Response} res Resposta HTTP.
+ * @param {import('express').NextFunction} next Encaminha falhas inesperadas.
+ * @returns {Promise<void>} Redireciona para a área correspondente ao papel.
+ * @throws {Error} Quando o banco ou o armazenamento de sessão falha.
+ */
+async function processLogin(req, res, next) {
+    const errors = validationResult(req);
+    const formData = { email: req.body.email || '' };
+    if (!errors.isEmpty()) {
+        return res.status(422).render('auth/login', {
+            title: 'Entrar', errors: errors.array().map((error) => error.msg), formData
+        });
     }
 
     try {
-        const user = await User.findOne({ email }).select('+password');
-        const isValidPassword = user && await user.comparePassword(password);
-
-        if (!isValidPassword) {
-            return res.status(401).render('login', { error: 'E-mail ou senha inválidos.' });
+        const user = await User.findByEmail(req.body.email);
+        const validPassword = user && await bcrypt.compare(req.body.password, user.senha_hash);
+        if (!validPassword) {
+            return res.status(401).render('auth/login', {
+                title: 'Entrar', errors: ['E-mail ou senha inválidos.'], formData
+            });
         }
 
-        if (user.hasLegacyPassword()) {
-            user.password = password;
-            await user.save();
-        }
-
-        const token = jwt.sign(
-            { id: user.id, email: user.email, name: user.name },
-            process.env.JWT_SECRET,
-            { expiresIn: '1d' }
-        );
-
-        res.cookie('token', token, cookieOptions());
-        res.redirect('/');
+        const returnTo = await authenticateSession(req, user);
+        return res.redirect(returnTo || (user.papel === 'organizador' ? '/organizador' : '/eventos'));
     } catch (error) {
-        console.error('Erro ao autenticar usuário:', error.message);
-        res.status(500).render('login', { error: 'Não foi possível concluir o login. Tente novamente.' });
+        return next(error);
     }
-};
+}
 
-exports.logout = (req, res) => {
-    res.clearCookie('token', cookieBaseOptions());
-    res.set({
-        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
-        Pragma: 'no-cache',
-        Expires: '0',
-        'Clear-Site-Data': '"cache"'
-    });
-    res.redirect('/login');
-};
+/**
+ * Renderiza o cadastro público de participantes.
+ * @param {import('express').Request} req Requisição HTTP.
+ * @param {import('express').Response} res Resposta HTTP.
+ * @returns {void} Renderiza o formulário de cadastro.
+ */
+function showRegister(req, res) {
+    res.render('auth/register', { title: 'Criar conta', errors: [], formData: {} });
+}
+
+/**
+ * Cadastra um participante com senha protegida por bcrypt.
+ * @async
+ * @param {import('express').Request} req Requisição com os dados validados.
+ * @param {import('express').Response} res Resposta HTTP.
+ * @param {import('express').NextFunction} next Encaminha falhas inesperadas.
+ * @returns {Promise<void>} Cria a sessão e redireciona para os eventos.
+ * @throws {Error} Quando não é possível persistir o novo usuário.
+ */
+async function register(req, res, next) {
+    const errors = validationResult(req);
+    const formData = { name: req.body.name || '', email: req.body.email || '' };
+    if (!errors.isEmpty()) {
+        return res.status(422).render('auth/register', {
+            title: 'Criar conta', errors: errors.array().map((error) => error.msg), formData
+        });
+    }
+
+    try {
+        if (await User.findByEmail(req.body.email)) {
+            return res.status(409).render('auth/register', {
+                title: 'Criar conta', errors: ['Este e-mail já está cadastrado.'], formData
+            });
+        }
+
+        const passwordHash = await bcrypt.hash(req.body.password, BCRYPT_ROUNDS);
+        const user = await User.create({
+            name: req.body.name,
+            email: req.body.email,
+            passwordHash,
+            role: 'participante'
+        });
+        await authenticateSession(req, user);
+        req.session.flash = { type: 'success', message: 'Conta criada com sucesso. Bem-vindo ao EventHub!' };
+        await saveSession(req);
+        return res.redirect('/eventos');
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(409).render('auth/register', {
+                title: 'Criar conta', errors: ['Este e-mail já está cadastrado.'], formData
+            });
+        }
+        return next(error);
+    }
+}
+
+/**
+ * Encerra a sessão atual e remove o cookie do navegador.
+ * @async
+ * @param {import('express').Request} req Requisição autenticada.
+ * @param {import('express').Response} res Resposta HTTP.
+ * @param {import('express').NextFunction} next Encaminha falhas inesperadas.
+ * @returns {Promise<void>} Redireciona para a tela de login.
+ * @throws {Error} Quando o armazenamento não consegue destruir a sessão.
+ */
+async function logout(req, res, next) {
+    try {
+        await destroySession(req);
+        const cookie = sessionCookieOptions();
+        res.clearCookie(process.env.SESSION_COOKIE_NAME || 'eventhub.sid', {
+            httpOnly: cookie.httpOnly,
+            secure: cookie.secure,
+            sameSite: cookie.sameSite,
+            path: cookie.path
+        });
+        res.set('Clear-Site-Data', '"cache", "cookies", "storage"');
+        return res.redirect('/login');
+    } catch (error) {
+        return next(error);
+    }
+}
+
+module.exports = { logout, processLogin, register, showLogin, showRegister };
